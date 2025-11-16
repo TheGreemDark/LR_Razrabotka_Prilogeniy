@@ -86,11 +86,6 @@ python -m app.main
 ```
 
 **Доступные тесты:**
-- `test_user_repository.py`  (создание, поиск по email, обновление)
-- `test_user_endpoints.py` - тесты HTTP эндпоинтов (GET, POST, PUT, DELETE)
-- `test_order_repository.py` - тесты edge-cases для заказов (множественные продукты, дубликаты, несуществующие ID)
-- `test_product_pagination.py` - тест пагинации товаров (проверка смещения, граничные случаи)
-
 - test_order_service_insufficient_stock.py - MOCK тесты для заказов с недостаточным количеством товаров
 - test_order_repository.py - тесты репозитория заказов
 - test_order_service.py - MOCK тесты для проверки успешности создания заказов
