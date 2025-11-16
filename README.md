@@ -1,7 +1,3 @@
-# API Управления Пользователями
-
-Это REST API приложение, построенное с использованием Litestar и SQLAlchemy для управления пользователями.
-
 ## Основные команды для запуска
 
 Если терминал ругается, то использовать команду:
@@ -40,61 +36,84 @@ python -m app.main
 
 ## Проверка работы тестов
 
-В папке `tests` находятся примеры тесты.
-Примеры вызовов этих примеров отражены списком ниже.
+В папке `tests` находятся тесты.
+Примеры вызовов этих тестов приведены ниже ниже.
 
-1. `get_operations.py` - примеры получения данных:
-   - Получение списка всех пользователей
-   - Получение конкретного пользователя по ID
-   ```bash
-   python crud_examples/get_operations.py
-   ```
+### Запуск всех тестов:
+```bash
+.\venv\Scripts\python.exe -m pytest -v
+```
 
-2. `post_operations.py` - примеры создания новых пользователей:
-   - Создание нового пользователя
-   - Обработка ошибок при дублировании данных
-   ```bash
-   python crud_examples/post_operations.py
-   ```
+### Запуск тестов по категориям:
+```bash
+# Тесты репозиториев
+.\venv\Scripts\python.exe -m pytest tests/test_user_repository.py -v
+.\venv\Scripts\python.exe -m pytest tests/test_order_repository.py -v
 
-3. `put_operations.py` - примеры обновления данных:
-   - Полное обновление пользователя
-   - Частичное обновление отдельных полей
-   ```bash
-   python crud_examples/put_operations.py
-   ```
+# Тесты эндпоинтов
+.\venv\Scripts\python.exe -m pytest tests/test_user_api.py -v
 
-4. `delete_operations.py` - примеры удаления данных:
-   - Удаление пользователя
-   - Проверка успешного удаления
-   ```bash
-   python crud_examples/delete_operations.py
-   ```
+# Тест пагинации
+.\venv\Scripts\python.exe -m pytest tests/test_product.py -v
+```
+```bash
+# Тесты mock
+.\venv\Scripts\python.exe -m pytest tests/test_oprder_service_insufficient_stock.py -v
+.\venv\Scripts\python.exe -m pytest tests/test_order_service.py -v
+.\venv\Scripts\python.exe -m pytest tests/test_product_service.py -v
+.\venv\Scripts\python.exe -m pytest tests/test_user_service.py -v
+```
+### Запуск конкретного теста:
+```bash
+# Пример: тест создания пользователя
+.\venv\Scripts\python.exe -m pytest tests/test_user_repository.py::TestUserRepository::test_create_user -v
 
-Каждый файл содержит подробные комментарии и примеры использования. 
-Перед запуском примеров необходимо проверить, что:
-1. Сервер запущен (`python -m app.main`)
-2. База данных инициализирована (`python init_db.py`)
-3. Установлен пакет requests (`pip install requests`)
+# Пример: тест эндпоинта GET
+.\venv\Scripts\python.exe -m pytest tests/test_user_api.py::test_get_user_by_id_success -v
+```
+остальные аналогично
 
+### Запуск с дополнительной информацией:
+```bash
+# С выводом print-statements
+.\venv\Scripts\python.exe -m pytest tests/test_user_repository.py -v -s
+
+# С подробным выводом ошибок
+.\venv\Scripts\python.exe -m pytest tests/test_user_repository.py -v --tb=long
+
+# Остановить выполнение при первой ошибке
+.\venv\Scripts\python.exe -m pytest -v -x
+```
+
+**Доступные тесты:**
+- `test_user_repository.py`  (создание, поиск по email, обновление)
+- `test_user_endpoints.py` - тесты HTTP эндпоинтов (GET, POST, PUT, DELETE)
+- `test_order_repository.py` - тесты edge-cases для заказов (множественные продукты, дубликаты, несуществующие ID)
+- `test_product_pagination.py` - тест пагинации товаров (проверка смещения, граничные случаи)
+
+- test_order_service_insufficient_stock.py - MOCK тесты для заказов с недостаточным количеством товаров
+- test_order_repository.py - тесты репозитория заказов
+- test_order_service.py - MOCK тесты для проверки успешности создания заказов
+- test_product_service.py - MOCK тесты для продуктов
+- test_product.py - пагинация товаров
+- test_user_api.py - тесты HTTP эндпоинтов (GET, POST, PUT, DELETE)
+- test_user_repository.py - тесты репозитория пользователей
+- test_user_service.py - MOCK тесты для пользователей
 ## API Endpoints (Конечные точки API)
 
-API Endpoints - это URL-адреса, по которым можно выполнять различные операции с данными. В приложении доступны следующие endpoints:
+API Endpoints - это URL-адреса, по которым можно выполнять различные операции с данными. В нашем приложении доступны следующие endpoints.
 
 ### 1. Получение списка пользователей
 - Метод: `GET`
 - URL: `http://127.0.0.1:8000/users`
-- Описание:
-  Возвращает список всех пользователей
-- Использование:
-  Откройте URL в браузере или выполните GET-запрос
+- Описание: Возвращает список всех пользователей
+- Как использовать: Просто откройте URL в браузере или выполните GET-запрос
 
 ### 2. Получение конкретного пользователя
 - Метод: `GET`
 - URL: `http://127.0.0.1:8000/users/{user_id}`
-  Возвращает информацию о пользователе по его ID
-- Пример использование:
-  `http://127.0.0.1:8000/users/1` - получить пользователя с ID=1
+- Описание: Возвращает информацию о пользователе по его ID
+- Пример: `http://127.0.0.1:8000/users/1` - получить пользователя с ID=1
 
 ### 3. Создание нового пользователя
 - Метод: `POST`
@@ -102,12 +121,13 @@ API Endpoints - это URL-адреса, по которым можно выпо
 - Тело запроса (пример):
 ```json
 {
-    "username": "Loken_X", 
-    "email": "Loken_X_Istvaan_III@example.com",
-    "full_name": "Локен Хорусович"
+    "username": "ivan_ivanov",
+    "email": "ivan@example.com",
+    "first_name": "Иван",
+    "last_name": "Иванов"
 }
 ```
-- Отправьте POST-запрос с JSON-данными (можно использовать Postman или curl)
+- Как использовать: Отправьте POST-запрос с JSON-данными (можно использовать Postman или curl)
 
 ### 4. Обновление пользователя
 - Метод: `PUT`
@@ -115,83 +135,36 @@ API Endpoints - это URL-адреса, по которым можно выпо
 - Тело запроса (пример):
 ```json
 {
-    "username": "Cerberus_updated",
-    "email": "Cerberus.new_Out@example.com",
-    "full_name": "Церберус Новый как с завода"
+    "first_name": "Иван",
+    "last_name": "Петров"
 }
 ```
-- Как использовать: Отправьте PUT-запрос с JSON-данными для обновления пользователя с указанным ID
+- Примечание: Все поля опциональны, можно обновить только нужные поля
 
 ### 5. Удаление пользователя
 - Метод: `DELETE`
 - URL: `http://127.0.0.1:8000/users/{user_id}`
-- Описание:
-  Удаляет пользователя с указанным ID
-- Как использовать:
-  Отправьте DELETE-запрос на URL с ID пользователя
+- Описание: Удаляет пользователя с указанным ID
+- Как использовать: Отправьте DELETE-запрос на URL с ID пользователя
+## Модели данных
 
-## Тестирование API
+### User (Пользователь)
+- `id` - уникальный идентификатор
+- `username` - имя пользователя (уникальное)
+- `email` - email (уникальный)
+- `first_name` - имя
+- `last_name` - фамилия
 
-1. Использование CURL (в командной строке Windows PowerShell):
+### Product (Продукт)
+- `id` - уникальный идентификатор
+- `title` - название продукта
+- `price_cents` - цена в центах
+- `stock_quantity` - количество на складе
 
-### Получение всех пользователей:
-```powershell
-curl http://127.0.0.1:8000/users
+### Order (Заказ)
+- `id` - уникальный идентификатор
+- `user_id` - ID пользователя
+- `shipping_address_id` - ID адреса доставки
+- `created_at` - дата создания
+- `products` - список продуктов в заказе (many-to-many)
 ```
-
-### Получение конкретного пользователя (например, с ID=1):
-```powershell
-curl http://127.0.0.1:8000/users/1
-```
-
-### Создание нового пользователя:
-```powershell
-$body = @{
-    username = "Loken_X"
-    email = "Loken_X_Istvaan_III@example.com"
-    full_name = "Локен Хорусович"
-} | ConvertTo-Json
-
-curl -X POST http://127.0.0.1:8000/users `
-     -H "Content-Type: application/json" `
-     -d $body
-```
-
-### Обновление пользователя (например, с ID=1):
-```powershell
-$body = @{
-    username = "Cerberus_updated"
-    email = "Cerberus.new_Out@example.com"
-    full_name = "Церберус Новый как с завода"
-} | ConvertTo-Json
-
-curl -X PUT http://127.0.0.1:8000/users/1 `
-     -H "Content-Type: application/json" `
-     -d $body
-```
-
-### Удаление пользователя (например, с ID=1):
-```powershell
-curl -X DELETE http://127.0.0.1:8000/users/1
-```
-
-Для командной строки Linux/Mac используйте обратный слэш (\) вместо backtick (`) для переноса строк:
-```bash
-curl -X POST http://127.0.0.1:8000/users \
-     -H "Content-Type: application/json" \
-     -d '{"username": "Loken_X", "email": "Loken_X_Istvaan_III@example.com", "full_name": "Локен Хорусович"}'
-```
-
-2. Используя Postman:
-- Установите Postman (https://www.postman.com/downloads/)
-- Создайте новый запрос, выберите метод (GET, POST, PUT, DELETE)
-- Введите URL
-- Для POST и PUT запросов добавьте тело запроса во вкладке "Body" в формате JSON
-- Нажмите "Send"
-
-3. Используя браузер:
-- GET запросы можно выполнять прямо в браузере, просто введя URL
-- Для остальных методов нужно использовать специальные инструменты (Postman, curl или расширения браузера)
-```
-
-Файл parsed_tasks.json случайно сюда попал, к данной работе он не относится.
