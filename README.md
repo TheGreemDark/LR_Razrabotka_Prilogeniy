@@ -121,10 +121,10 @@ API Endpoints - это URL-адреса, по которым можно выпо
 - Тело запроса (пример):
 ```json
 {
-    "username": "ivan_ivanov",
-    "email": "ivan@example.com",
-    "first_name": "Иван",
-    "last_name": "Иванов"
+    "username": "Loken_X",
+    "email": "Loken_X_Istvaan_III@example.com",
+    "first_name": "Локен",
+    "last_name": "Хорусович"
 }
 ```
 - Как использовать: Отправьте POST-запрос с JSON-данными (можно использовать Postman или curl)
@@ -135,8 +135,8 @@ API Endpoints - это URL-адреса, по которым можно выпо
 - Тело запроса (пример):
 ```json
 {
-    "first_name": "Иван",
-    "last_name": "Петров"
+    "first_name": "Церберус",
+    "last_name": "Нехорусович"
 }
 ```
 - Примечание: Все поля опциональны, можно обновить только нужные поля
