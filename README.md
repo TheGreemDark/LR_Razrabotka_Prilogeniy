@@ -2,12 +2,16 @@
 
 Это REST API приложение, построенное с использованием Litestar и SQLAlchemy для управления пользователями.
 
-## Установка и Настройка
+## Основные команды для запуска
 
 1. Создание и активация виртуального окружения:
 ```bash
 python -m venv venv
+```
+```bash
 .\venv\Scripts\activate  # для Windows
+```
+```bash
 source venv/bin/activate # для Linux/Mac
 ```
 
