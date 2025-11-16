@@ -4,7 +4,7 @@ from litestar import Litestar
 from litestar.di import Provide
 
 from app.controllers.user_controller import UserController
-from app.providers import get_db_session, get_user_repository, get_user_service
+from app.providers import provide_db_session, provide_user_repository, provide_user_service
 
 # Database configuration
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///mydb.sqlite3")
@@ -17,9 +17,9 @@ async_session_factory = async_sessionmaker(
 app = Litestar(
     route_handlers=[UserController],
     dependencies={
-        "db_session": Provide(get_db_session),
-        "user_repository": Provide(get_user_repository),
-        "user_service": Provide(get_user_service),
+        "db_session": Provide(provide_db_session),
+        "user_repository": Provide(provide_user_repository),
+        "user_service": Provide(provide_user_service),
     },
 )
 

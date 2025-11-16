@@ -1,4 +1,3 @@
-
 from typing import List
 from litestar import Controller, get, post, put, delete
 from litestar.params import Parameter

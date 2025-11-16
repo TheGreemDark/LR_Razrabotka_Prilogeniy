@@ -10,17 +10,17 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session_factory() as session:
         yield session
 
-async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
-    """Поставщик сессии базы данных"""
+async def provide_db_session() -> AsyncGenerator[AsyncSession, None]:
+    """Database session provider"""
     async for session in get_session():
         yield session
 
-async def get_user_repository(db_session: AsyncSession) -> UserRepository:
-    """Поставщик UserRepository"""
-    repository = UserRepository()
-    repository.session = db_session
-    return repository
+async def provide_user_repository(db_session: AsyncSession) -> UserRepository:
+    """User repository provider"""
+    repo = UserRepository()
+    repo.session = db_session
+    return repo
 
-async def get_user_service(user_repository: UserRepository) -> UserService:
-    """Поставщик UserService"""
+async def provide_user_service(user_repository: UserRepository) -> UserService:
+    """User service provider"""
     return UserService(user_repository)

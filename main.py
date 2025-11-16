@@ -1,13 +1,21 @@
-from sqlalchemy import select
-from sqlalchemy.orm import selectinload
-from db import SessionLocal
-from models import User
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from models import Base, User, Address, Order, Product
+from db import engine
+Session = sessionmaker(bind=engine)
 
-def show_users_with_addresses():
-    with SessionLocal() as session:
-        stmt = select(User).options(selectinload(User.addresses))
-        for user in session.execute(stmt).scalars():
-            print(user.name, [a.city for a in user.addresses])
-
-if __name__ == "__main__":
-    show_users_with_addresses()
+with Session() as session:
+    users = session.query(User).all()
+    for user in users:
+        print(f"User: {user.name}, Email: {user.email}, Description: {user.decription}")
+        for address in user.addresses:
+            print(f"  Address: {address.city}, {address.street}")
+        # Заказы этого пользователя
+        orders = session.query(Order).filter(Order.user_id == user.id).all()
+        for order in orders:
+            print(f"  Order ID: {order.id}, Created at: {order.created_at}")
+            print(f"    Shipping Address: {order.shipping_address.city}, {order.shipping_address.street}")
+            print("    Products:")
+            for product in order.products:
+                print(f"      - {product.title}, Price: {product.price_cents / 100:.2f} USD")
+        print("-" * 40)
