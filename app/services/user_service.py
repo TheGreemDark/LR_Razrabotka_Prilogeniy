@@ -1,6 +1,7 @@
+from app.models.user import User
 from app.repositories.user_repository import UserRepository
 from app.schemas.user_schema import UserCreate, UserUpdate
-from app.models.user import User
+
 
 class UserService:
     def __init__(self, user_repository: UserRepository):
@@ -9,8 +10,12 @@ class UserService:
     async def get_by_id(self, user_id: int) -> User | None:
         return await self.user_repository.get_by_id(user_id)
 
-    async def get_by_filter(self, count: int = 10, page: int = 1, **filters) -> list[User]:
-        return await self.user_repository.get_by_filter(count=count, page=page, **filters)
+    async def get_by_filter(
+        self, count: int = 10, page: int = 1, **filters
+    ) -> list[User]:
+        return await self.user_repository.get_by_filter(
+            count=count, page=page, **filters
+        )
 
     async def create(self, user_data: UserCreate) -> User:
         # Проверяем наличие пользователя с таким username или email
@@ -22,7 +27,7 @@ class UserService:
 
         if existing_users:
             raise ValueError("Пользователь с таким username уже существует")
-        
+
         return await self.user_repository.create(user_data)
 
     async def update(self, user_id: int, user_data: UserUpdate) -> User | None:

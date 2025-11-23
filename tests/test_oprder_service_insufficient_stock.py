@@ -1,6 +1,10 @@
-import pytest
 from unittest.mock import AsyncMock, MagicMock, PropertyMock
+
+import pytest
+
 from app.services.order_service import OrderService
+
+
 @pytest.mark.asyncio
 class TestOrderService:
 
@@ -22,12 +26,14 @@ class TestOrderService:
         order_service = OrderService(
             order_repository=mock_order_repo,
             product_repository=mock_product_repo,
-            user_repository=mock_user_repo
+            user_repository=mock_user_repo,
         )
 
         order_data = {
             "user_id": 1,
-            "items": [{"product_id": 1, "quantity": 2}]   # quantity больше stock_quantity
+            "items": [
+                {"product_id": 1, "quantity": 2}
+            ],  # quantity больше stock_quantity
         }
 
         with pytest.raises(ValueError, match="Insufficient stock"):

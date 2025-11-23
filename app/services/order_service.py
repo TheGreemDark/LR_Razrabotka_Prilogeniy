@@ -4,6 +4,7 @@ from app.repositories.user_repository import UserRepository
 from app.schemas.order_product_schema import OrderCreate, OrderUpdate
 from models import Order
 
+
 class OrderService:
     def __init__(
         self,
@@ -18,28 +19,32 @@ class OrderService:
     async def get_by_id(self, order_id: int) -> Order | None:
         return await self.order_repository.get_by_id(order_id)
 
-    async def get_by_filter(self, count: int = 10, page: int = 1, **filters) -> list[Order]:
-        return await self.order_repository.get_by_filter(count=count, page=page, **filters)
+    async def get_by_filter(
+        self, count: int = 10, page: int = 1, **filters
+    ) -> list[Order]:
+        return await self.order_repository.get_by_filter(
+            count=count, page=page, **filters
+        )
 
     # Новый метод для создания заказа с несколькими товарами в формате из теста
     async def create_order(self, order_data: dict) -> Order:
-        user = await self.user_repository.get_by_id(order_data['user_id'])
+        user = await self.user_repository.get_by_id(order_data["user_id"])
         if not user:
             raise ValueError("Пользователь не найден")
 
         total_amount = 0
         # Проверяем все товары в заказе
-        for item in order_data['items']:
-            product = await self.product_repository.get_by_id(item['product_id'])
+        for item in order_data["items"]:
+            product = await self.product_repository.get_by_id(item["product_id"])
             if not product:
                 raise ValueError(f"Товар с id {item['product_id']} не найден")
-            if product.stock_quantity < item['quantity']:
+            if product.stock_quantity < item["quantity"]:
                 raise ValueError("Insufficient stock")
-            total_amount += product.price * item['quantity']
+            total_amount += product.price * item["quantity"]
 
         # Создаём объект OrderCreate (пример, в зависимости от вашей модели)
         order_create = OrderCreate(
-            user_id=order_data['user_id'],
+            user_id=order_data["user_id"],
             total_amount=total_amount,
             status="pending",
             # возможно нужно передать товары в заказ, зависит от схемы

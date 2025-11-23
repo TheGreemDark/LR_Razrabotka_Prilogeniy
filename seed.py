@@ -1,8 +1,10 @@
+from datetime import datetime
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import *
-from datetime import datetime
+
 from db import *
+from models import *
 
 Base.metadata.create_all(engine)
 
@@ -40,11 +42,36 @@ with Session() as session:
     session.flush()
 
     # Заказы
-    order1 = Order(user_id=user1.id, shipping_address_id=addr1.id, created_at=datetime.now(), products=[product1, product4])
-    order2 = Order(user_id=user2.id, shipping_address_id=addr2.id, created_at=datetime.now(), products=[product2])
-    order3 = Order(user_id=user3.id, shipping_address_id=addr3.id, created_at=datetime.now(), products=[product1, product3, product5])
-    order4 = Order(user_id=user4.id, shipping_address_id=addr4.id, created_at=datetime.now(), products=[product3, product4])
-    order5 = Order(user_id=user5.id, shipping_address_id=addr5.id, created_at=datetime.now(), products=[product2, product5])
+    order1 = Order(
+        user_id=user1.id,
+        shipping_address_id=addr1.id,
+        created_at=datetime.now(),
+        products=[product1, product4],
+    )
+    order2 = Order(
+        user_id=user2.id,
+        shipping_address_id=addr2.id,
+        created_at=datetime.now(),
+        products=[product2],
+    )
+    order3 = Order(
+        user_id=user3.id,
+        shipping_address_id=addr3.id,
+        created_at=datetime.now(),
+        products=[product1, product3, product5],
+    )
+    order4 = Order(
+        user_id=user4.id,
+        shipping_address_id=addr4.id,
+        created_at=datetime.now(),
+        products=[product3, product4],
+    )
+    order5 = Order(
+        user_id=user5.id,
+        shipping_address_id=addr5.id,
+        created_at=datetime.now(),
+        products=[product2, product5],
+    )
 
     session.add_all([order1, order2, order3, order4, order5])
 

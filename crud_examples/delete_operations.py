@@ -1,9 +1,10 @@
 import requests
 
+
 def delete_user(user_id: int):
     """Удалить пользователя"""
     response = requests.delete(f"http://127.0.0.1:8000/users/{user_id}")
-    
+
     print(f"\nУдаление пользователя с ID {user_id}:")
     print(f"Статус: {response.status_code}")
     # На успешное удаление сервер может вернуть 200 или 204.
@@ -27,24 +28,26 @@ def delete_user(user_id: int):
         # Пустой или не-JSON ответ
         print("Ответ (raw):", response.text)
 
+
 def check_user_exists(user_id: int) -> bool:
     """Проверить существование пользователя"""
     response = requests.get(f"http://127.0.0.1:8000/users/{user_id}")
     return response.status_code == 200
 
+
 if __name__ == "__main__":
     user_id = 2
-    
+
     # Проверить, существует ли пользователь
     if check_user_exists(user_id):
         # Удалить пользователя
         delete_user(user_id)
-        
+
         # Проверить, что пользователь действительно удален
         if not check_user_exists(user_id):
             print(f"Пользователь с ID {user_id} успешно удален")
     else:
         print(f"Пользователь с ID {user_id} не найден")
-    
+
     # Попытка удалить несуществующего пользователя
     delete_user(999)

@@ -1,0 +1,25 @@
+fail_fast: false
+repos:
+  - repo: local
+    hooks:
+      - id: system
+        name: Black
+        entry: python -m black
+        args: ['app', 'models.py']
+        pass_filenames: false
+        language: system
+        always_run: true
+      - id: isort
+        name: isort
+        entry: python -m isort
+        args: ['app', 'models.py']
+        pass_filenames: false
+        language: system
+        always_run: true
+      - id: system
+        name: pylint
+        entry: python -m pylint
+        args: ['--rcfile=.pylintrc', 'app', 'models.py']
+        pass_filenames: false
+        language: system
+        always_run: true

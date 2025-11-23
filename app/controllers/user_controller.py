@@ -1,10 +1,12 @@
 from typing import List
-from litestar import Controller, get, post, put, delete
-from litestar.params import Parameter
-from litestar.exceptions import NotFoundException, HTTPException
 
+from litestar import Controller, delete, get, post, put
+from litestar.exceptions import HTTPException, NotFoundException
+from litestar.params import Parameter
+
+from app.schemas.user_schema import UserCreate, UserResponse, UserUpdate
 from app.services.user_service import UserService
-from app.schemas.user_schema import UserCreate, UserUpdate, UserResponse
+
 
 class UserController(Controller):
     path = "/users"
@@ -44,7 +46,9 @@ class UserController(Controller):
         except ValueError as err:
             raise HTTPException(status_code=400, detail=str(err))
         except Exception as err:
-            raise HTTPException(status_code=500, detail=f"Ошибка при создании пользователя: {err}")
+            raise HTTPException(
+                status_code=500, detail=f"Ошибка при создании пользователя: {err}"
+            )
         return UserResponse.model_validate(user)
 
     @put("/{user_id:int}")
@@ -62,7 +66,9 @@ class UserController(Controller):
         except ValueError as err:
             raise HTTPException(status_code=400, detail=str(err))
         except Exception as err:
-            raise HTTPException(status_code=500, detail=f"Ошибка при обновлении пользователя: {err}")
+            raise HTTPException(
+                status_code=500, detail=f"Ошибка при обновлении пользователя: {err}"
+            )
         return UserResponse.model_validate(user)
 
     @delete("/{user_id:int}")

@@ -1,8 +1,10 @@
-import pytest
 from unittest.mock import AsyncMock
+
+import pytest
 
 from app.models.user import User
 from app.schemas.user_schema import UserCreate, UserUpdate
+
 
 class TestUserServiceWithMock:
     @pytest.mark.asyncio
@@ -10,10 +12,21 @@ class TestUserServiceWithMock:
         # Мокаем репозиторий
         mock_repo = AsyncMock()
         # Мокаем возвращаемого пользователя с id и полями
-        mock_user = User(id=1, email="test@example.com", username="john_doe", first_name="John", last_name="Doe")
+        mock_user = User(
+            id=1,
+            email="test@example.com",
+            username="john_doe",
+            first_name="John",
+            last_name="Doe",
+        )
         mock_repo.create.return_value = mock_user
 
-        user_data = UserCreate(email="test@example.com", username="john_doe", first_name="John", last_name="Doe")
+        user_data = UserCreate(
+            email="test@example.com",
+            username="john_doe",
+            first_name="John",
+            last_name="Doe",
+        )
         # Вызываем метод create (имитируем вызов сервисного слоя)
         user = await mock_repo.create(user_data)
 
@@ -26,7 +39,13 @@ class TestUserServiceWithMock:
     @pytest.mark.asyncio
     async def test_get_by_email(self):
         mock_repo = AsyncMock()
-        mock_user = User(id=1, email="unique@example.com", username="user_test", first_name="Test", last_name="User")
+        mock_user = User(
+            id=1,
+            email="unique@example.com",
+            username="user_test",
+            first_name="Test",
+            last_name="User",
+        )
         mock_repo.get_by_email.return_value = mock_user
 
         found_user = await mock_repo.get_by_email("unique@example.com")
@@ -38,8 +57,20 @@ class TestUserServiceWithMock:
     @pytest.mark.asyncio
     async def test_update_user(self):
         mock_repo = AsyncMock()
-        mock_user_before = User(id=1, email="update@example.com", username="test", first_name="Original", last_name="Name")
-        mock_user_after = User(id=1, email="update@example.com", username="test", first_name="Updated", last_name="Name")
+        mock_user_before = User(
+            id=1,
+            email="update@example.com",
+            username="test",
+            first_name="Original",
+            last_name="Name",
+        )
+        mock_user_after = User(
+            id=1,
+            email="update@example.com",
+            username="test",
+            first_name="Updated",
+            last_name="Name",
+        )
         mock_repo.update.return_value = mock_user_after
 
         updated_user = await mock_repo.update(1, UserUpdate(first_name="Updated"))
@@ -52,8 +83,20 @@ class TestUserServiceWithMock:
     async def test_get_by_filter(self):
         mock_repo = AsyncMock()
         mock_users = [
-            User(id=1, email="user1@example.com", username="user1", first_name="User1", last_name="One"),
-            User(id=2, email="user2@example.com", username="user2", first_name="User2", last_name="Two"),
+            User(
+                id=1,
+                email="user1@example.com",
+                username="user1",
+                first_name="User1",
+                last_name="One",
+            ),
+            User(
+                id=2,
+                email="user2@example.com",
+                username="user2",
+                first_name="User2",
+                last_name="Two",
+            ),
         ]
         mock_repo.get_by_filter.return_value = mock_users
 

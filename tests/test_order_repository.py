@@ -1,16 +1,22 @@
 import pytest
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 
 from app.models.user import User
-from models import Address, Product, Order
 from app.schemas.user_schema import UserCreate
-from sqlalchemy.orm import selectinload
+from models import Address, Order, Product
 
 
 @pytest.mark.asyncio
-async def test_create_order_with_multiple_products(session, user_repository, product_repository, order_repository):
+async def test_create_order_with_multiple_products(
+    session, user_repository, product_repository, order_repository
+):
     # Создаём пользователя через репозиторий
-    user = await user_repository.create(UserCreate(email="u1@example.com", username="u1", first_name="U1", last_name="Test"))
+    user = await user_repository.create(
+        UserCreate(
+            email="u1@example.com", username="u1", first_name="U1", last_name="Test"
+        )
+    )
 
     # Создаём и сохраняем адрес пользователя через сессию
     addr = Address(user_id=user.id, city="City", street="Street 1")
@@ -31,10 +37,17 @@ async def test_create_order_with_multiple_products(session, user_repository, pro
     ids = {p.id for p in order.products}
     assert ids == {p1.id, p2.id}
 
+
 @pytest.mark.asyncio
-async def test_create_order_with_missing_product_ids(session, user_repository, product_repository, order_repository):
+async def test_create_order_with_missing_product_ids(
+    session, user_repository, product_repository, order_repository
+):
     # Создаём пользователя для теста
-    user = await user_repository.create(UserCreate(email="u2@example.com", username="u2", first_name="U2", last_name="Test"))
+    user = await user_repository.create(
+        UserCreate(
+            email="u2@example.com", username="u2", first_name="U2", last_name="Test"
+        )
+    )
     # Создаём и сохраняем адрес
     addr = Address(user_id=user.id, city="City", street="Street 2")
     session.add(addr)
@@ -52,10 +65,17 @@ async def test_create_order_with_missing_product_ids(session, user_repository, p
     assert len(order.products) == 1
     assert order.products[0].id == p1.id
 
+
 @pytest.mark.asyncio
-async def test_create_order_with_duplicate_product_ids(session, user_repository, product_repository, order_repository):
+async def test_create_order_with_duplicate_product_ids(
+    session, user_repository, product_repository, order_repository
+):
     # Создаём пользователя и адрес
-    user = await user_repository.create(UserCreate(email="u3@example.com", username="u3", first_name="U3", last_name="Test"))
+    user = await user_repository.create(
+        UserCreate(
+            email="u3@example.com", username="u3", first_name="U3", last_name="Test"
+        )
+    )
     addr = Address(user_id=user.id, city="City", street="Street 3")
     session.add(addr)
     await session.commit()
@@ -72,10 +92,17 @@ async def test_create_order_with_duplicate_product_ids(session, user_repository,
     assert len(order.products) == 1
     assert order.products[0].id == p1.id
 
+
 @pytest.mark.asyncio
-async def test_add_product_already_in_order(session, user_repository, product_repository, order_repository):
+async def test_add_product_already_in_order(
+    session, user_repository, product_repository, order_repository
+):
     # Создаём пользователя, адрес и продукт
-    user = await user_repository.create(UserCreate(email="u4@example.com", username="u4", first_name="U4", last_name="Test"))
+    user = await user_repository.create(
+        UserCreate(
+            email="u4@example.com", username="u4", first_name="U4", last_name="Test"
+        )
+    )
     addr = Address(user_id=user.id, city="City", street="Street 4")
     session.add(addr)
     await session.commit()
@@ -91,10 +118,17 @@ async def test_add_product_already_in_order(session, user_repository, product_re
     # Проверяем, что продукт не дублируется
     assert len(order.products) == 1
 
+
 @pytest.mark.asyncio
-async def test_remove_product_not_in_order(session, user_repository, product_repository, order_repository):
+async def test_remove_product_not_in_order(
+    session, user_repository, product_repository, order_repository
+):
     # Создаём пользователя и адрес
-    user = await user_repository.create(UserCreate(email="u5@example.com", username="u5", first_name="U5", last_name="Test"))
+    user = await user_repository.create(
+        UserCreate(
+            email="u5@example.com", username="u5", first_name="U5", last_name="Test"
+        )
+    )
     addr = Address(user_id=user.id, city="City", street="Street 5")
     session.add(addr)
     await session.commit()
@@ -116,8 +150,14 @@ async def test_remove_product_not_in_order(session, user_repository, product_rep
 
 
 @pytest.mark.asyncio
-async def test_create_order_with_empty_products(session, user_repository, order_repository):
-    user = await user_repository.create(UserCreate(email="u6@example.com", username="u6", first_name="U6", last_name="Test"))
+async def test_create_order_with_empty_products(
+    session, user_repository, order_repository
+):
+    user = await user_repository.create(
+        UserCreate(
+            email="u6@example.com", username="u6", first_name="U6", last_name="Test"
+        )
+    )
     addr = Address(user_id=user.id, city="City", street="Street 6")
     session.add(addr)
     await session.commit()
@@ -130,9 +170,18 @@ async def test_create_order_with_empty_products(session, user_repository, order_
 
 # Тест получения всех заказов конкретного пользователя с продуктами по user_id
 @pytest.mark.asyncio
-async def test_get_by_user(session, user_repository, product_repository, order_repository):
+async def test_get_by_user(
+    session, user_repository, product_repository, order_repository
+):
     # Создаём пользователя
-    user = await user_repository.create(UserCreate(email="byuser@example.com", username="userA", first_name="UserA", last_name="Test"))
+    user = await user_repository.create(
+        UserCreate(
+            email="byuser@example.com",
+            username="userA",
+            first_name="UserA",
+            last_name="Test",
+        )
+    )
     addr = Address(user_id=user.id, city="CityU", street="StreetU")
     session.add(addr)
     await session.commit()
@@ -149,14 +198,24 @@ async def test_get_by_user(session, user_repository, product_repository, order_r
     assert len(orders) >= 2
     # Проверяем, что в каждом заказе есть связанные продукты
     for order in orders:
-        assert hasattr(order, 'products')
+        assert hasattr(order, "products")
         assert len(order.products) >= 1
+
 
 # Тест получения заказа по id с подгрузкой связанных продуктов
 @pytest.mark.asyncio
-async def test_get_by_id(session, user_repository, product_repository, order_repository):
+async def test_get_by_id(
+    session, user_repository, product_repository, order_repository
+):
     # Создаём пользователя, адрес, продукты и заказ
-    user = await user_repository.create(UserCreate(email="byid@example.com", username="userB", first_name="UserB", last_name="Test"))
+    user = await user_repository.create(
+        UserCreate(
+            email="byid@example.com",
+            username="userB",
+            first_name="UserB",
+            last_name="Test",
+        )
+    )
     addr = Address(user_id=user.id, city="CityB", street="StreetB")
     session.add(addr)
     await session.commit()
@@ -170,16 +229,27 @@ async def test_get_by_id(session, user_repository, product_repository, order_rep
     result = await session.execute(stmt)
     fetched_order = result.scalars().first()
     assert fetched_order is not None
-    assert hasattr(fetched_order, 'products')
+    assert hasattr(fetched_order, "products")
     assert {p.id for p in fetched_order.products} == {prod1.id, prod2.id}
+
+
 @pytest.mark.asyncio
-async def test_delete_order_by_id(session, user_repository, product_repository, order_repository):
+async def test_delete_order_by_id(
+    session, user_repository, product_repository, order_repository
+):
     """
     Тест удаления заказа по его ID.
     Проверяет, что заказ удаляется корректно, если существует.
     """
     # Создаём пользователя, адрес и заказ
-    user = await user_repository.create(UserCreate(email="delorder@example.com", username="delU", first_name="Del", last_name="User"))
+    user = await user_repository.create(
+        UserCreate(
+            email="delorder@example.com",
+            username="delU",
+            first_name="Del",
+            last_name="User",
+        )
+    )
     addr = Address(user_id=user.id, city="CityDel", street="StreetDel")
     session.add(addr)
     await session.commit()
@@ -195,6 +265,8 @@ async def test_delete_order_by_id(session, user_repository, product_repository, 
     result = await session.execute(stmt)
     deleted_order = result.scalars().first()
     assert deleted_order is None
+
+
 @pytest.mark.asyncio
 async def test_get_all_order(session, order_repository):
     """

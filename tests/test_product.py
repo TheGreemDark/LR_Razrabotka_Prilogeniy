@@ -1,5 +1,6 @@
 import pytest
 from sqlalchemy import select
+
 from models import Product
 
 
@@ -22,13 +23,13 @@ async def test_product(session, product_repository):
     page_items = result.scalars().all()  # получаем продукты текущей страницы
 
     # Формируем список ожидаемых id из созданных продуктов для сравнения
-    #expected = [products[i].id for i in range(offset, offset + count)]
-    
+    # expected = [products[i].id for i in range(offset, offset + count)]
+
     products_sorted = sorted(products, key=lambda p: p.id)
-    expected = [p.id for p in products_sorted[offset:offset + count]]
-    
+    expected = [p.id for p in products_sorted[offset : offset + count]]
+
     # Проверяем, что полученные id совпадают с ожидаемыми
-    #assert [p.id for p in page_items] == expected
+    # assert [p.id for p in page_items] == expected
 
     # Тест граничного случая: страница за пределами диапазона возвращает пустой список
     q2 = select(Product).order_by(Product.id).offset(1000).limit(count)
@@ -40,4 +41,3 @@ async def test_product(session, product_repository):
     r3 = await session.execute(q3)
     assert r3.scalars().all() == []
     print(offset, expected, [p.id for p in page_items])
-    

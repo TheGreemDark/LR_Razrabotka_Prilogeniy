@@ -1,6 +1,7 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-from models import Product
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from models import Product
 
 
 class ProductRepository:
@@ -17,11 +18,11 @@ class ProductRepository:
         result = await self.session.execute(query)
         return list(result.scalars().all())
 
-    async def create(self, title: str, price_cents: int, quantity_tovar: int) -> Product:
+    async def create(
+        self, title: str, price_cents: int, quantity_tovar: int
+    ) -> Product:
         product = Product(
-            title=title,
-            price_cents=price_cents,
-            quantity_tovar=quantity_tovar
+            title=title, price_cents=price_cents, quantity_tovar=quantity_tovar
         )
         self.session.add(product)
         await self.session.commit()
@@ -32,7 +33,7 @@ class ProductRepository:
         product = await self.get_by_id(product_id)
         if not product:
             return None
-        
+
         product.quantity_tovar = new_quantity
         await self.session.commit()
         await self.session.refresh(product)

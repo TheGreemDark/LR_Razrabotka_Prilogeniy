@@ -1,10 +1,15 @@
 import os
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
+
 from litestar import Litestar
 from litestar.di import Provide
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from app.controllers.user_controller import UserController
-from app.providers import provide_db_session, provide_user_repository, provide_user_service
+from app.providers import (
+    provide_db_session,
+    provide_user_repository,
+    provide_user_service,
+)
 
 # Database configuration
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///mydb.sqlite3")
@@ -25,4 +30,5 @@ app = Litestar(
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)

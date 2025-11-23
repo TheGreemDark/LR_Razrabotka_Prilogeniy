@@ -62,7 +62,7 @@ python -m app.main
    python crud_examples/delete_operations.py
    ```
 
-Каждый файл содержит подробные комментарии и примеры использования. 
+Каждый файл содержит подробные комментарии и примеры использования.
 Перед запуском примеров необходимо проверить, что:
 1. Сервер запущен (`python -m app.main`)
 2. База данных инициализирована (`python init_db.py`)
@@ -93,7 +93,7 @@ API Endpoints - это URL-адреса, по которым можно выпо
 - Тело запроса (пример):
 ```json
 {
-    "username": "Loken_X", 
+    "username": "Loken_X",
     "email": "Loken_X_Istvaan_III@example.com",
     "full_name": "Локен Хорусович"
 }

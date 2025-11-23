@@ -1,7 +1,9 @@
 import pytest
+
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
 from app.schemas.user_schema import UserCreate, UserUpdate
+
 
 class TestUserRepository:
     @pytest.mark.asyncio
@@ -14,10 +16,10 @@ class TestUserRepository:
             first_name="John",
             last_name="Doe",
         )
-        
+
         # Вызываем метод создания пользователя в репозитории
         user = await user_repository.create(user_data)
-        
+
         # Проверяем, что у пользователя появился id (создан в БД)
         assert user.id is not None
         # Проверяем правильность сохранённых полей
@@ -38,10 +40,10 @@ class TestUserRepository:
                 last_name="User",
             )
         )
-        
+
         # Пытаемся получить пользователя из репозитория по email
         found_user = await user_repository.get_by_email("unique@example.com")
-        
+
         # Проверяем, что пользователь найден
         assert found_user is not None
         # Проверяем идентификацию по id
@@ -61,31 +63,37 @@ class TestUserRepository:
                 last_name="Name",
             )
         )
-        
+
         # Обновляем только поле first_name у пользователя
         updated_user = await user_repository.update(
-            user.id,
-            UserUpdate(first_name="Updated")
+            user.id, UserUpdate(first_name="Updated")
         )
-        
+
         # Проверяем, что username остался без изменений
         assert updated_user.username == "test"
         # Проверяем, что first_name обновился на новое значение
         assert updated_user.first_name == "Updated"
         # Проверяем, что last_name остался прежним
         assert updated_user.last_name == "Name"
+
     @pytest.mark.asyncio
     async def test_get_by_filter(self, user_repository: UserRepository):
         """Тест получения списка всех пользователей"""
         # Создаём нескольких пользователей
         await user_repository.create(
             UserCreate(
-                email="user1@example.com", username="user1", first_name="User1", last_name="One"
+                email="user1@example.com",
+                username="user1",
+                first_name="User1",
+                last_name="One",
             )
         )
         await user_repository.create(
             UserCreate(
-                email="user2@example.com", username="user2", first_name="User2", last_name="Two"
+                email="user2@example.com",
+                username="user2",
+                first_name="User2",
+                last_name="Two",
             )
         )
         # Получаем список всех пользователей
@@ -102,7 +110,10 @@ class TestUserRepository:
         # Создаём пользователя
         user = await user_repository.create(
             UserCreate(
-                email="delete_me@example.com", username="delete_me", first_name="Delete", last_name="Me"
+                email="delete_me@example.com",
+                username="delete_me",
+                first_name="Delete",
+                last_name="Me",
             )
         )
         # Удаляем пользователя
