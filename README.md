@@ -54,69 +54,40 @@ docker compose up --build
 В папке `tests` находятся тесты.
 Примеры вызовов этих тестов приведены ниже ниже.
 
-### Запуск всех тестов:
-```bash
-.\venv\Scripts\python.exe -m pytest -v
-```
+1. `get_operations.py` - примеры получения данных:
+   - Получение списка всех пользователей
+   - Получение конкретного пользователя по ID
+   ```bash
+   python crud_examples/get_operations.py
+   ```
 
-### Запуск тестов по категориям:
-```bash
-# Тесты репозиториев
-.\venv\Scripts\python.exe -m pytest tests/test_user_repository.py -v
-.\venv\Scripts\python.exe -m pytest tests/test_order_repository.py -v
+2. `post_operations.py` - примеры создания новых пользователей:
+   - Создание нового пользователя
+   - Обработка ошибок при дублировании данных
+   ```bash
+   python crud_examples/post_operations.py
+   ```
 
-# Тесты эндпоинтов
-.\venv\Scripts\python.exe -m pytest tests/test_user_api.py -v
+3. `put_operations.py` - примеры обновления данных:
+   - Полное обновление пользователя
+   - Частичное обновление отдельных полей
+   ```bash
+   python crud_examples/put_operations.py
+   ```
 
-# Тест пагинации
-.\venv\Scripts\python.exe -m pytest tests/test_product.py -v
-```
-```bash
-# Тесты mock
-.\venv\Scripts\python.exe -m pytest tests/test_oprder_service_insufficient_stock.py -v
-.\venv\Scripts\python.exe -m pytest tests/test_order_service.py -v
-.\venv\Scripts\python.exe -m pytest tests/test_product_service.py -v
-.\venv\Scripts\python.exe -m pytest tests/test_user_service.py -v
-```
-### Запуск конкретного теста:
-```bash
-# Пример: тест создания пользователя
-.\venv\Scripts\python.exe -m pytest tests/test_user_repository.py::TestUserRepository::test_create_user -v
+4. `delete_operations.py` - примеры удаления данных:
+   - Удаление пользователя
+   - Проверка успешного удаления
+   ```bash
+   python crud_examples/delete_operations.py
+   ```
 
-<<<<<<< HEAD
-Каждый файл содержит подробные комментарии и примеры использования.
+Каждый файл содержит подробные комментарии и примеры использования. 
 Перед запуском примеров необходимо проверить, что:
 1. Сервер запущен (`python -m app.main`)
 2. База данных инициализирована (`python init_db.py`)
 3. Установлен пакет requests (`pip install requests`)
-=======
-# Пример: тест эндпоинта GET
-.\venv\Scripts\python.exe -m pytest tests/test_user_api.py::test_get_user_by_id_success -v
-```
-остальные аналогично
->>>>>>> 72ce716fd979f9c6b6c95e7ad66d05746544f8ff
 
-### Запуск с дополнительной информацией:
-```bash
-# С выводом print-statements
-.\venv\Scripts\python.exe -m pytest tests/test_user_repository.py -v -s
-
-# С подробным выводом ошибок
-.\venv\Scripts\python.exe -m pytest tests/test_user_repository.py -v --tb=long
-
-# Остановить выполнение при первой ошибке
-.\venv\Scripts\python.exe -m pytest -v -x
-```
-
-**Доступные тесты:**
-- test_order_service_insufficient_stock.py - MOCK тесты для заказов с недостаточным количеством товаров
-- test_order_repository.py - тесты репозитория заказов
-- test_order_service.py - MOCK тесты для проверки успешности создания заказов
-- test_product_service.py - MOCK тесты для продуктов
-- test_product.py - пагинация товаров
-- test_user_api.py - тесты HTTP эндпоинтов (GET, POST, PUT, DELETE)
-- test_user_repository.py - тесты репозитория пользователей
-- test_user_service.py - MOCK тесты для пользователей
 ## API Endpoints (Конечные точки API)
 
 API Endpoints - это URL-адреса, по которым можно выполнять различные операции с данными. В нашем приложении доступны следующие endpoints.
