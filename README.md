@@ -71,7 +71,6 @@ python rabbitMQ.py
 Далее необходимо запустить файл продюсера данных:
 python -m scripts.producer
 ```
-```bash
 
 ## Проверка работы тестов
 
