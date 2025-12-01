@@ -49,6 +49,30 @@ docker compose up
 ```bash
 docker compose up --build
 ```
+## Проверка работы БД
+Для проверки работы БД были созданы файлы:
+check_db.py
+```bash
+python check_db.py
+```
+Если после запуска выводится только колонка users, то нужно выполнить:
+```bash
+python create_tables.py
+```
+После этого БД заполнится всеми нужными колонками Tables: ['addresses', 'order_products', 'orders', 'products', 'users']
+## Проверка RabbitMQ
+Следующие команды лучше выполнять в отдельных терминалах.
+Перед этим также нужно запустить БД и докер как описано выше.
+Используется команда для запуска файла rabbitMQ.py:
+```bash
+python rabbitMQ.py
+```
+```bash
+Далее необходимо запустить файл продюсера данных:
+python -m scripts.producer
+```
+```bash
+
 ## Проверка работы тестов
 
 В папке `tests` находятся тесты.
