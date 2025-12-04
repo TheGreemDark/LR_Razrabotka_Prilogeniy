@@ -39,12 +39,10 @@ python -m app.main
 ```bash
 docker compose build
 ```
-docker compose build
 2. Запустить сервисы:
 ```bash
 docker compose up
 ```
-docker compose up
 3. Построить образ и запустить сервисы:
 ```bash
 docker compose up --build
