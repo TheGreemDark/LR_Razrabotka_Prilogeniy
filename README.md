@@ -65,8 +65,9 @@ python create_tables.py
 ```bash
 python rabbitMQ.py
 ```
-```bash
+
 Далее необходимо запустить файл продюсера данных:
+```bash
 python -m scripts.producer
 ```
 По адресу `http://localhost:15672` будет работать UI в котором можно будет проверить работу RabbitMQ. По умолчанию логин и пароль guest/guest.
