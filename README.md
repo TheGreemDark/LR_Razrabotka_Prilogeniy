@@ -60,7 +60,7 @@ python check_db.py
 python create_tables.py
 ```
 После этого БД заполнится всеми нужными колонками Tables: ['addresses', 'order_products', 'orders', 'products', 'users']
-## Проверка RabbitMQ
+## Проверка RabbitMQ Лабораторная работа 6
 Следующие команды лучше выполнять в отдельных терминалах.
 Перед этим также нужно запустить БД и докер как описано выше.
 Используется команда для запуска файла rabbitMQ.py:
@@ -72,7 +72,21 @@ python rabbitMQ.py
 python -m scripts.producer
 ```
 По адресу `http://localhost:15672` будет работать UI в котором можно будет проверить работу RabbitMQ. По умолчанию логин и пароль guest/guest.
-## Проверка работы тестов
+
+## Проверка Redis Лабораторная работа 7
+Модуль для работы redis (app/redis_cache.py).
+1. \`docker compose up -d --build\`
+2. Инициализация БД: \`docker compose muproject-web-1 python init_db.py\`
+3. Тест redis: \`docker exec muproject-web-1 python test_Dcash.py\`
+4. Тест кэширования: \`docker exec muproject-web-1 python test_redis.py\`
+
+### Результаты ЛР7:
+- Redis контейнер в docker-compose.yaml
+- Кэширование пользователей: TTL=1ч, инвалидация при UPDATE/DELETE
+- Кэширование продуктов: TTL=10мин, обновление при update_stock
+- Тесты: CACHE MISS → HIT → UPDATE → HIT → DELETE
+
+## Проверка работы тестов Лабораторная работа 4
 
 В папке `tests` находятся тесты.
 Примеры вызовов этих тестов приведены ниже ниже.
