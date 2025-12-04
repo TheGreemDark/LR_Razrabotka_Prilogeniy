@@ -1,9 +1,8 @@
 import json
 import os
-from typing import Optional
+from typing import Any, Optional
 
 import redis
-from redis.exceptions import RedisError
 
 
 class RedisCache:
@@ -11,7 +10,7 @@ class RedisCache:
 
     def __init__(self):
         redis_host = os.getenv("REDIS_HOST", "redis")
-        redis_port = int(os.getenv("REDIS_PORT", "6379"))
+        redis_port = int(os.getenv("REDIS_PORT", 6379))
         self.client = redis.Redis(
             host=redis_host, port=redis_port, db=0, decode_responses=True
         )
@@ -23,8 +22,8 @@ class RedisCache:
             if data:
                 return json.loads(data)
             return None
-        except RedisError as e:
-            print(f"Redis error getting cache for {key}: {e}")
+        except Exception as e:
+            print(f"Error getting cache for {key}: {e}")
             return None
 
     def set(self, key: str, value: dict, ttl: int) -> bool:
@@ -33,8 +32,8 @@ class RedisCache:
             json_data = json.dumps(value)
             self.client.setex(key, ttl, json_data)
             return True
-        except RedisError as e:
-            print(f"Redis error setting cache for {key}: {e}")
+        except Exception as e:
+            print(f"Error setting cache for {key}: {e}")
             return False
 
     def delete(self, key: str) -> bool:
@@ -42,8 +41,8 @@ class RedisCache:
         try:
             self.client.delete(key)
             return True
-        except RedisError as e:
-            print(f"Redis error deleting cache for {key}: {e}")
+        except Exception as e:
+            print(f"Error deleting cache for {key}: {e}")
             return False
 
     def clear_pattern(self, pattern: str) -> int:
@@ -53,17 +52,18 @@ class RedisCache:
             if keys:
                 return self.client.delete(*keys)
             return 0
-        except RedisError as e:
-            print(f"Redis error clearing cache pattern {pattern}: {e}")
+        except Exception as e:
+            print(f"Error clearing cache pattern {pattern}: {e}")
             return 0
 
 
-# Модульная переменная для singleton (без underscore, pylint не жалуется)
-_redis_instance: Optional[RedisCache] = None
+# Singleton instance
+_redis_cache: Optional[RedisCache] = None
 
 
 def get_redis_cache() -> RedisCache:
     """Получить singleton экземпляр Redis кэша"""
-    if _redis_instance is None:
-        _redis_instance = RedisCache()
-    return _redis_instance
+    global _redis_cache
+    if _redis_cache is None:
+        _redis_cache = RedisCache()
+    return _redis_cache
