@@ -20,16 +20,10 @@ async def provide_db_session() -> AsyncGenerator[AsyncSession, None]:
         yield session
 
 
-# async def provide_user_repository(db_session: AsyncSession) -> UserRepository:
-#    """User repository provider"""
-#    repo = UserRepository()
-#    repo.session = db_session
-#    return repo
-
-
 async def provide_user_repository(db_session: AsyncSession) -> UserRepository:
     """User repository provider"""
-    repo = UserRepository(db_session)
+    repo = UserRepository()
+    repo.session = db_session
     return repo
 
 
