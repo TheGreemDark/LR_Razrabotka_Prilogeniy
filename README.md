@@ -76,9 +76,9 @@ python -m scripts.producer
 ## Проверка Redis Лабораторная работа 7
 Модуль для работы redis (app/redis_cache.py).
 1. \`docker compose up -d --build\`
-2. Инициализация БД: \`docker compose muproject-web-1 python init_db.py\`
-3. Тест redis: \`docker exec muproject-web-1 python test_Dcash.py\`
-4. Тест кэширования: \`docker exec muproject-web-1 python test_redis.py\`
+2. Инициализация БД: \`docker compose myproject-web-1 python init_db.py\`
+3. Тест redis: \`docker exec myproject-web-1 python test_Dcash.py\`
+4. Тест кэширования: \`docker exec myproject-web-1 python test_redis.py\`
 
 ### Результаты ЛР7:
 - Redis контейнер в docker-compose.yaml
