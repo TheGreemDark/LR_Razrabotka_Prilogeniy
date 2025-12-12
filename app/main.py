@@ -4,14 +4,15 @@ from litestar import Litestar
 from litestar.di import Provide
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
+from app.controllers.report_controller import ReportController
 from app.controllers.user_controller import UserController
 from app.providers import (
     provide_db_session,
+    provide_report_repository,
     provide_user_repository,
     provide_user_service,
 )
 
-# Database configuration
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///mydb.sqlite3")
 
 engine = create_async_engine(DATABASE_URL, echo=True)
@@ -20,11 +21,12 @@ async_session_factory = async_sessionmaker(
 )
 
 app = Litestar(
-    route_handlers=[UserController],
+    route_handlers=[UserController, ReportController],
     dependencies={
         "db_session": Provide(provide_db_session),
         "user_repository": Provide(provide_user_repository),
         "user_service": Provide(provide_user_service),
+        "report_repository": Provide(provide_report_repository),
     },
 )
 

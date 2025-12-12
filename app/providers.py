@@ -3,8 +3,13 @@ from typing import AsyncGenerator
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import sessionmaker
 
+from app.repositories.report_repository import ReportRepository
 from app.repositories.user_repository import UserRepository
 from app.services.user_service import UserService
+
+
+async def provide_report_repository(db_session: AsyncSession) -> ReportRepository:
+    return ReportRepository(db_session)
 
 
 async def get_session() -> AsyncGenerator[AsyncSession, None]:

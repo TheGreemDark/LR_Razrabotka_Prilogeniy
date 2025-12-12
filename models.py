@@ -1,6 +1,8 @@
 # models.py
+from datetime import date
+
 from pydantic import BaseModel
-from sqlalchemy import Column, ForeignKey, Integer, String, Table
+from sqlalchemy import Column, Date, ForeignKey, Integer, String, Table
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -80,3 +82,12 @@ class Order(Base):
     user = relationship("User")
     shipping_address = relationship("Address")
     products = relationship("Product", secondary=order_products, lazy="selectin")
+
+
+class OrderReport(Base):
+    __tablename__ = "order_reports"
+
+    id = Column(Integer, primary_key=True)
+    report_at = Column(Date, nullable=False)
+    order_id = Column(Integer, ForeignKey("orders.id"), nullable=False)
+    count_product = Column(Integer, nullable=False)
