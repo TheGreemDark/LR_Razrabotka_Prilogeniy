@@ -100,6 +100,32 @@ docker exec myproject-web-1 python test_redis.py
 - Кэширование продуктов: TTL=10мин, обновление при update_stock
 - Тесты: CACHE MISS → HIT → UPDATE → HIT → DELETE
 
+## Проверка работы с планировщиками Лабораторная работа 8
+Необходимо провести инициализацию базы данных, чтобы добавить в нее колонки order_reports
+1. Инициализация базы данных:
+```bash
+python init_db.py
+```
+2. Запуск самого приложения:
+```bash
+python -m app.main
+```
+3. В отдельном терминале запустить docker, rabbitMQ.py
+```bash
+docker compose up
+```
+4. В отдельном терминале запустить rabbitMQ.py
+```bash
+python rabbitMQ.py
+```
+5. В отдельном терминале запуск шедулера с помощью команды:
+```bash
+taskiq scheduler scheduler:scheduler --skip-first-run
+```
+6. В отдельном терминале проверка корректности выполненных действий
+```bash
+http "http://127.0.0.1:8000/report" report_at==2025-12-10
+```
 ## Проверка работы тестов Лабораторная работа 4
 
 В папке `tests` находятся тесты.
