@@ -126,6 +126,17 @@ taskiq scheduler scheduler:scheduler --skip-first-run
 ```bash
 http "http://127.0.0.1:8000/report" report_at==2025-12-10
 ```
+Должно вывестисть примерно следующее:
+```bash
+[
+  {
+    "count_product": 3,
+    "id": 1,
+    "order_id": 1,
+    "order_date": "2025-12-10"
+  }
+]
+```
 ## Проверка работы тестов Лабораторная работа 4
 
 В папке `tests` находятся тесты.
