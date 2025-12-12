@@ -39,12 +39,10 @@ python -m app.main
 ```bash
 docker compose build
 ```
-docker compose build
 2. Запустить сервисы:
 ```bash
 docker compose up
 ```
-docker compose up
 3. Построить образ и запустить сервисы:
 ```bash
 docker compose up --build
@@ -67,19 +65,34 @@ python create_tables.py
 ```bash
 python rabbitMQ.py
 ```
-```bash
+
 Далее необходимо запустить файл продюсера данных:
+```bash
 python -m scripts.producer
 ```
 По адресу `http://localhost:15672` будет работать UI в котором можно будет проверить работу RabbitMQ. По умолчанию логин и пароль guest/guest.
 
 ## Проверка Redis Лабораторная работа 7
 Модуль для работы redis (app/redis_cache.py).
-1. \`docker compose up -d --build\`
-2. Инициализация БД: \`docker exec myproject-web-1 python init_db.py\`
-3. Для инициализации \`redis docker compose exec web pip install redis\`
-4. Тест redis: \`docker exec myproject-web-1 python test_Dcash.py\`
-5. Тест кэширования: \`docker exec myproject-web-1 python test_redis.py\`
+```bash
+docker compose up -d --build
+```
+Инициализация БД:
+```bash
+docker exec myproject-web-1 python init_db.py
+```
+Для инициализации (если заругается, что не видит redis):
+```bash
+redis docker compose exec web pip install redis
+```
+Тест redis: 
+```bash
+docker exec myproject-web-1 python test_Dcash.py
+```
+Тест кэширования:
+```bash
+docker exec myproject-web-1 python test_redis.py
+```
 
 ### Результаты ЛР7:
 - Redis контейнер в docker-compose.yaml
